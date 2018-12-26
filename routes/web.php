@@ -11,12 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-
 Route::group(array('middleware' => 'auth'), function()
 {
     Route::get('backend/shops', ['as'=> 'backend.shops.index', 'uses' => 'Backend\shopController@index']);
@@ -31,11 +25,13 @@ Route::group(array('middleware' => 'auth'), function()
 
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home/likehome/{id}', 'HomeController@likehome')->name('home.likehome');
-Route::get('/home/likenearby/{id}', 'HomeController@likenearby')->name('home.likenearby');
-Route::get('/home/remove/{id}', 'HomeController@remove')->name('home.remove');
-Route::get('/likedshops', 'HomeController@liked')->name('home.liked');
-Route::get('/nearby', 'HomeController@nearby')->name('home.nearby')->middleware('auth');
-Route::get('/location', 'HomeController@location')->name('home.location');
+Route::group(array('middleware' => 'auth'), function()
+{
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home/likehome/{id}', 'HomeController@likehome')->name('home.likehome');
+    Route::get('/home/likenearby/{id}', 'HomeController@likenearby')->name('home.likenearby');
+    Route::get('/home/remove/{id}', 'HomeController@remove')->name('home.remove');
+    Route::get('/likedshops', 'HomeController@liked')->name('home.likedshops');
+    Route::get('/nearby', 'HomeController@nearby')->name('home.nearby');
+    Route::get('/location', 'HomeController@location')->name('home.location');
+});

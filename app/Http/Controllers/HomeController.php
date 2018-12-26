@@ -83,8 +83,10 @@ class HomeController extends Controller
                             ->where('user_id',Auth::user()->id)
                             ->first();
         if($find){
-            $find->liked = 1;
-            $find->save();
+            DB::table('likedshops')
+                    ->where('shop_id', $id)
+                    ->where('user_id',Auth::user()->id)
+                    ->update(['liked' => 1]);
         }else{
             $likedshop = new likedshop;
             $likedshop->user_id = Auth::user()->id;
@@ -140,7 +142,7 @@ class HomeController extends Controller
                     ->where('shop_id', $id)
                     ->where('user_id',Auth::user()->id)
                     ->update(['liked' => 0]);
-        return redirect()->route('home');
+        return redirect()->route('home.likedshops');
         
         
     }
